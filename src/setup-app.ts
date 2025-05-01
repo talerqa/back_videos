@@ -5,7 +5,7 @@ import {setupSwagger} from "./core/swagger/setup-swagger";
 export const setupApp = (app: Express) => {
   app.use(express.json());
 
-  app.use('/hometask_01/api', homeTask01Router);
+  app.use('/', homeTask01Router);
   setupSwagger(app);
   return app;
 };

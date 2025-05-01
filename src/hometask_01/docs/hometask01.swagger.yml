@@ -3,7 +3,7 @@ tags:
     description: API for managing videos
 
 paths:
-  /hometask_01/api/testing/all-data:
+  /testing/all-data:
     delete:
       summary: Delete all video
       tags: [ Videos ]
@@ -12,7 +12,7 @@ paths:
           description: All data is deleted
         404:
           description: Video not found
-  /hometask_01/api/videos:
+  /videos:
     get:
       summary: Returns all videos
       tags: [ Videos ]
@@ -47,7 +47,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
-  /hometask_01/api/videos/{id}:
+  /videos/{id}:
     get:
       summary: Return video by id
       tags: [ Videos ]
