@@ -5,7 +5,5 @@ info:
   description: Uber API documentation
 
 tags:
-  - name: Testing
-    description: API for clearing the database
   - name: HomeTask01
     description: API for managing drivers
