@@ -20,13 +20,15 @@ paths:
       tags: [ Videos ]
       responses:
         200:
-          description: Return all video
+          description: Returns all videos
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Video'
+        404:
+          description: Not Found
     post:
       summary: Add a new video
       tags: [ Videos ]
