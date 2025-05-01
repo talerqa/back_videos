@@ -43,7 +43,7 @@ export const createErrorMessages = (
 
 
 homeTask01Router.get('/videos', (req, res) => {
-  res.status(HttpStatus.Ok).send(db.videos);
+  res.status(HttpStatus.Ok).send('videos array');
 });
 
 homeTask01Router.post('/videos', (req, res) => {
@@ -62,7 +62,7 @@ homeTask01Router.get('/videos/:id', (req, res) => {
       );
     return;
   }
-  res.status(200).send(driver);
+  res.status(200).send('created video');
 });
 
 homeTask01Router.put('/videos/:id', (req, res) => {
@@ -79,7 +79,7 @@ homeTask01Router.delete('/videos/:id', (req, res) => {
     res
       .status(HttpStatus.NotFound)
       .send(
-        createErrorMessages([{ field: 'id', message: 'Not found' }]),
+        createErrorMessages([{field: 'id', message: 'Not found'}]),
       );
     return;
   }
@@ -87,7 +87,7 @@ homeTask01Router.delete('/videos/:id', (req, res) => {
   db.videos.splice(index, 1);
   res.sendStatus(HttpStatus.NoContent);
 
-  res.status(HttpStatus.NoContent)
+  res.status(HttpStatus.NoContent).send('video by id')
 });
 
 homeTask01Router.delete('/testing/all-data', (req, res) => {
