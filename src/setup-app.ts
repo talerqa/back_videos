@@ -9,9 +9,7 @@ export const setupApp = (app: Express) => {
     res.status(200).send('hello world!!!');
   });
 
-  // // Подключаем роутеры
   app.use('/hometask_01/api', homeTask01Router);
-  // app.use('/testing', testingRouter);
   setupSwagger(app);
   return app;
 };

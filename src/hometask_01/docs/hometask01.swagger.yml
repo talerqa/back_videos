@@ -3,6 +3,17 @@ tags:
     description: API for managing videos
 
 paths:
+  /api/hometask_01/api/testing/all-data:
+    delete:
+      summary: Delete all video
+      tags: [ Videos ]
+      responses:
+        204:
+          description:  All data is deleted
+        404:
+          description: Video not found
+        405:
+          description: Not Allowed
   /api/hometask_01/api/videos:
     get:
       summary: Get a list of all videos
@@ -24,22 +35,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DriverInputDto'
+              $ref: '#/components/schemas/CreateVideoInputModel'
       responses:
         201:
           description: The driver was successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Driver'
+                $ref: '#/components/schemas/Video'
         400:
           description: Validation error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
-
-  /api/drivers/{id}:
+  /api/hometask_01/api/videos/{id}:
     get:
       summary: Get a video by ID
       tags: [ Videos ]
@@ -57,12 +67,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Driver'
+                $ref: '#/components/schemas/Video'
         404:
-          description: Driver not found
+          description: Video not found
     put:
-      summary: Update a driver by ID
-      tags: [ Drivers ]
+      summary: Update a video by ID
+      tags: [ Videos ]
       parameters:
         - in: path
           name: id
@@ -76,10 +86,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DriverInputDto'
+              $ref: '#/components/schemas/UpdateVideoInputModel'
       responses:
         204:
-          description: Driver updated successfully
+          description: Video updated successfully
         400:
           description: Validation error
           content:
@@ -87,23 +97,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
         404:
-          description: Driver not found
+          description: Video not found
     delete:
-      summary: Delete a driver by ID
-      tags: [ Drivers ]
+      summary: Delete a video by ID
+      tags: [ Videos ]
       parameters:
         - in: path
           name: id
           required: true
-          description: "The unique identifier of the driver"
+          description: "The unique identifier of the video"
           schema:
             type: integer
             example: 2
       responses:
         204:
-          description: Driver deleted successfully
+          description: Video deleted successfully
         404:
-          description: Driver not found
+          description: Video not found
 components:
   schemas:
     Video:
@@ -124,7 +134,7 @@ components:
           example: 2
         title:
           type: string
-          description: "The full name of the title"
+          description: "The full name of title"
           example: "Title"
         author:
           type: string
@@ -154,74 +164,94 @@ components:
           type: array
           items:
             type: string
-            enum: [ P144, P240, P360, P480, P720, P1080, P1440, P2160  ]
+            enum: [ P144, P240, P360, P480, P720, P1080, P1440, P2160 ]
           description: "Resolution available video. Choose from the provided options"
           example: [ "P144", "P360" ]
-    DriverInputDto:
+    CreateVideoInputModel:
       type: object
       required:
-        - name
-        - phoneNumber
-        - email
-        - vehicleMake
-        - vehicleModel
-        - vehicleYear
-        - vehicleLicensePlate
-        - vehicleFeatures
+        - title
+        - author
+        - availableResolutions
       properties:
-        name:
+        title:
           type: string
-          description: "The full name of the driver"
-          example: "Tom Rider"
-        phoneNumber:
+          description: "The full name of title"
+          example: "Title"
+        author:
           type: string
-          description: "The driver's phone number"
-          example: "123-456-7890"
-        email:
-          type: string
-          description: "The driver's email address"
-          example: "tom.rider@example.com"
-        vehicleMake:
-          type: string
-          description: "The make of the vehicle"
-          example: "Toyota"
-        vehicleModel:
-          type: string
-          description: "The model of the vehicle"
-          example: "Camry"
-        vehicleYear:
-          type: integer
-          description: "The year the vehicle was manufactured"
-          example: 2025
-        vehicleLicensePlate:
-          type: string
-          description: "The vehicle's license plate number"
-          example: "XYZ 1234"
-        vehicleDescription:
-          type: string
-          nullable: true
-          description: "A description of the vehicle, including any notable features or conditions"
-          example: "A spacious SUV with leather seats and a sunroof"
-        vehicleFeatures:
+          description: "The author's name"
+          example: "Ivan"
+        availableResolutions:
           type: array
           items:
             type: string
-            enum: [ wi-fi, child-seat, pet-friendly ]
-          description: "Features available in the vehicle. Choose from the provided options"
-          example: [ "wi-fi", "pet-friendly" ]
+            enum: [ P144, P240, P360, P480, P720, P1080, P1440, P2160 ]
+          description: "Resolution available video. Choose from the provided options"
+          example: [ "P144", "P360" ]
+    UpdateVideoInputModel:
+      type: object
+      required:
+        - title
+        - author
+        - availableResolutions
+        - canBeDownloaded
+        - minAgeRestriction
+        - publicationDate
+      properties:
+        title:
+          type: string
+          description: "The full name of title"
+          example: "Title"
+        author:
+          type: string
+          description: "The author's name"
+          example: "Ivan"
+        availableResolutions:
+          type: array
+          items:
+            type: string
+            enum: [ P144, P240, P360, P480, P720, P1080, P1440, P2160 ]
+          description: "Resolution available video. Choose from the provided options"
+          example: [ "P144", "P360" ]
+        canBeDownloaded:
+          type: boolean
+          default: true
+          description: "Video can be downloaded"
+          example: true
+        minAgeRestriction:
+          type: string
+          nullable: true
+          description: "Minimum age restriction"
+          example: null
+        publicationDate:
+          type: string
+          format: date-time
+          description: "The date and time when the video was published"
+          example: "2023-03-05T12:00:00Z"
+    Resolutions:
+      type: array
+      items:
+        type: string
+        enum: [ P144, P240, P360, P480, P720, P1080, P1440, P2160 ]
+      description: "Resolution available video. Choose from the provided options"
+      example: [ "P144", "P360" ]
     ValidationError:
       type: object
       properties:
         field:
           type: string
+          nullable: true
           example: "name"
         message:
           type: string
+          nullable: true
           example: "Invalid name"
     ValidationErrorResponse:
       type: object
       properties:
         errorMessages:
           type: array
+          nullable: true
           items:
             $ref: '#/components/schemas/ValidationError'
