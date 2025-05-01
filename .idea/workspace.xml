@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60fd64cf-20c4-4fa2-bda5-138661a3cbee" name="Changes" comment="refactor: Refactor swagger">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/swagger/openapi.swagger.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/swagger/openapi.swagger.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hometask_01/docs/hometask01.swagger.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/hometask_01/docs/hometask01.swagger.yml" afterDir="false" />
+    <list default="true" id="60fd64cf-20c4-4fa2-bda5-138661a3cbee" name="Changes" comment="refactor: Refactor">
       <change beforePath="$PROJECT_DIR$/src/hometask_01/routers/routers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hometask_01/routers/routers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setup-app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/setup-app.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,8 +70,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.watch" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.watch" />
       </list>
     </recent_temporary>
   </component>
@@ -94,7 +90,7 @@
       <workItem from="1745874200165" duration="21000" />
       <workItem from="1745878065677" duration="66000" />
       <workItem from="1746104645430" duration="7497000" />
-      <workItem from="1746132220218" duration="1572000" />
+      <workItem from="1746132220218" duration="1885000" />
     </task>
     <task id="LOCAL-00001" summary="git init project">
       <option name="closed" value="true" />
@@ -168,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746114732436</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="refactor: Refactor">
+      <option name="closed" value="true" />
+      <created>1746133904718</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746133904718</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -180,7 +184,8 @@
     <MESSAGE value="add: config" />
     <MESSAGE value="add: vercel.json" />
     <MESSAGE value="refactor: Refactor swagger" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: Refactor swagger" />
+    <MESSAGE value="refactor: Refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: Refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

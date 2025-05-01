@@ -33,6 +33,12 @@ const db: Video[] = [{
   availableResolutions: ['P240', "P360"]
 }]
 
+export const createErrorMessages = (
+  errors: any[],
+): { errorMessages: any[] } => {
+  return {errorMessages: errors};
+};
+
 
 homeTask01Router.get('/videos', (req, res) => {
   res.status(200).send(db);
@@ -43,7 +49,18 @@ homeTask01Router.post('/videos', (req, res) => {
 });
 
 homeTask01Router.get('/videos/:id', (req, res) => {
-  res.status(200).send('hello world!!!');
+  const id = parseInt(req.params.id);
+  const driver = db.find((d) => d.id === id);
+
+  if (!driver) {
+    res
+      .status(HttpStatus.NotFound)
+      .send(
+        createErrorMessages([{field: 'id', message: "If video for passed id doesn't exist"}]),
+      );
+    return;
+  }
+  res.status(200).send(driver);
 });
 
 homeTask01Router.put('/videos/:id', (req, res) => {
@@ -55,5 +72,5 @@ homeTask01Router.delete('/videos/:id', (req, res) => {
 });
 
 homeTask01Router.delete('/testing/all-data', (req, res) => {
-  res.status(HttpStatus.NoContent).send('All data is deleted');
+  res.status(HttpStatus.NoContent).send([]);
 });
