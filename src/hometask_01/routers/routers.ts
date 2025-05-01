@@ -24,5 +24,5 @@ homeTask01Router.delete('/videos/:id', (req, res) => {
 });
 
 homeTask01Router.delete('/testing/all-data', (req, res) => {
-  res.status(HttpStatus.NoContent).send('hello world!!!');
+  res.status(HttpStatus.NoContent).send('All data is deleted');
 });
