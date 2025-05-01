@@ -49,71 +49,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationErrorResponse'
-  /api/hometask_01/api/videos/{id}:
-    get:
-      summary: Get a video by ID
-      tags: [ Videos ]
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: "The unique identifier of the driver"
-          schema:
-            type: integer
-            example: 2
-      responses:
-        200:
-          description: The requested driver
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Video'
-        404:
-          description: Video not found
-    put:
-      summary: Update a video by ID
-      tags: [ Videos ]
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: "The unique identifier of the driver"
-          schema:
-            type: integer
-            example: 2
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateVideoInputModel'
-      responses:
-        204:
-          description: Video updated successfully
-        400:
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidationErrorResponse'
-        404:
-          description: Video not found
-    delete:
-      summary: Delete a video by ID
-      tags: [ Videos ]
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: "The unique identifier of the video"
-          schema:
-            type: integer
-            example: 2
-      responses:
-        204:
-          description: Video deleted successfully
-        404:
-          description: Video not found
+
 components:
   schemas:
     Video:
