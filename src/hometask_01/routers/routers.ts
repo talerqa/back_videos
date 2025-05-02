@@ -9,28 +9,28 @@ const db = {
     id: 1,
     title: 'Video 01',
     author: 'Author 01',
-    canBeDownloaded: true,
-    minAgeRestriction: 18,
+    canBeDownloaded: false,
+    minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2023-05-01T12:00:00Z',
+    publicationDate: '2025-05-02T12:00:00Z',
     availableResolutions: ['P240', "P720"]
   }, {
     id: 2,
     title: 'Video 02',
     author: 'Author 02',
-    canBeDownloaded: true,
-    minAgeRestriction: 18,
+    canBeDownloaded: false,
+    minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2023-05-01T12:00:00Z',
+    publicationDate: '2025-05-02T12:00:00Z',
     availableResolutions: ['P240', "P1080"]
   }, {
     id: 3,
     title: 'Video 03',
     author: 'Author 03',
-    canBeDownloaded: true,
-    minAgeRestriction: 18,
+    canBeDownloaded: false,
+    minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2023-05-01T12:00:00Z',
+    publicationDate: '2025-05-02T12:00:00Z',
     availableResolutions: ['P240', "P360"]
   }]
 }
@@ -43,7 +43,7 @@ export const createErrorMessages = (
 
 
 homeTask01Router.get('/videos', (req, res) => {
-  res.status(HttpStatus.Ok).send('videos array');
+  res.status(HttpStatus.Ok).send(db.videos);
 });
 
 homeTask01Router.post('/videos', (req, res) => {
@@ -62,7 +62,7 @@ homeTask01Router.get('/videos/:id', (req, res) => {
       );
     return;
   }
-  res.status(200).send('created video');
+  res.status(200).send(driver);
 });
 
 homeTask01Router.put('/videos/:id', (req, res) => {
