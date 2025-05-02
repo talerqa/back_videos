@@ -4,35 +4,24 @@ import {Video} from "../types/video";
 
 export const homeTask01Router = Router({});
 
+const today = new Date();
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+
 const db = {
-  videos: <Video[]>[{
-    id: 1,
-    title: 'Video 01',
-    author: 'Author 01',
-    canBeDownloaded: false,
-    minAgeRestriction: null,
-    createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P144']
-  }, {
-    id: 2,
-    title: 'Video 02',
-    author: 'Author 02',
-    canBeDownloaded: false,
-    minAgeRestriction: null,
-    createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P144']
-  }, {
-    id: 3,
-    title: 'Video 03',
-    author: 'Author 03',
-    canBeDownloaded: false,
-    minAgeRestriction: null,
-    createdAt: '2025-05-01T12:00:00Z',
-    publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P144']
-  }]
+  videos: <Video[]>[
+    {
+      id: 0,
+      title: "string",
+      author: "string",
+      canBeDownloaded: true,
+      minAgeRestriction: null,
+      createdAt: today.toISOString(),
+      publicationDate: tomorrow.toISOString(),
+      availableResolutions: [
+        "P144"
+      ]
+    }]
 }
 
 export const createErrorMessages = (
@@ -79,9 +68,7 @@ homeTask01Router.post('/videos', (req, res) => {
         }]));
       }
     }
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+
 
     const newDriver: any = {
       id: db.videos.length ? db.videos[db.videos.length - 1].id + 1 : 1,
