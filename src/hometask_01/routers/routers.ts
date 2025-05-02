@@ -51,14 +51,14 @@ homeTask01Router.post('/videos', (req, res) => {
       })
     }
 
-    if (!req.body.availableResolutions.length) {
+    if (!req.body.availableResolutions?.length) {
       errors.push({
         field: 'availableResolutions',
         message: 'At least one resolution should be added'
       })
     }
 
-    if (req.body.availableResolutions.length) {
+    if (req.body.availableResolutions?.length) {
       const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
       const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
 
@@ -127,7 +127,6 @@ homeTask01Router.put('/videos/:id', (req, res) => {
   }
 
   if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
-
     errors.push({
       field: 'title',
       message: 'Incorrect title'
@@ -141,10 +140,10 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     })
   }
 
-  if (!req.body.availableResolutions.length) {
+  if (typeof req.body.canBeDownloaded !== 'boolean') {
     errors.push({
-      field: 'availableResolutions',
-      message: 'At least one resolution should be added'
+      field: 'canBeDownloaded',
+      message: 'Incorrect canBeDownloaded'
     })
   }
 
@@ -155,7 +154,14 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     })
   }
 
-  if (req.body.availableResolutions.length) {
+  if (!req.body.availableResolutions?.length) {
+    errors.push({
+      field: 'availableResolutions',
+      message: 'At least one resolution should be added'
+    })
+  }
+
+  if (req.body.availableResolutions?.length) {
     const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
     const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
 
