@@ -35,25 +35,27 @@ homeTask01Router.get('/videos', (req, res) => {
 });
 
 homeTask01Router.post('/videos', (req, res) => {
+    const errors: any[] = [];
+
     if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
-      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      errors.push({
         field: 'title',
         message: 'Incorrect title'
-      }]));
+      })
     }
 
     if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
-      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      errors.push({
         field: 'author',
         message: 'Incorrect author'
-      }]));
+      })
     }
 
     if (!req.body.availableResolutions.length) {
-      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      errors.push({
         field: 'availableResolutions',
         message: 'At least one resolution should be added'
-      }]));
+      })
     }
 
     if (req.body.availableResolutions.length) {
@@ -62,11 +64,16 @@ homeTask01Router.post('/videos', (req, res) => {
 
 
       if (!isValid) {
-        res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+        errors.push({
           field: 'availableResolutions',
           message: 'At least one resolution should be added'
-        }]));
+        })
       }
+    }
+
+    if (errors.length > 0) {
+      res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+      return;
     }
 
     const today = new Date();
@@ -106,7 +113,7 @@ homeTask01Router.get('/videos/:id', (req, res) => {
 });
 
 homeTask01Router.put('/videos/:id', (req, res) => {
-
+  const errors: any[] = [];
   const id = parseInt(req.params.id);
   const index = db.videos.findIndex((v) => v.id === id);
 
@@ -120,32 +127,32 @@ homeTask01Router.put('/videos/:id', (req, res) => {
   }
 
   if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
-    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+
+    errors.push({
       field: 'title',
       message: 'Incorrect title'
-    }]));
+    })
   }
 
   if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
-    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+    errors.push({
       field: 'author',
       message: 'Incorrect author'
-    }]));
+    })
   }
 
   if (!req.body.availableResolutions.length) {
-    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+    errors.push({
       field: 'availableResolutions',
       message: 'At least one resolution should be added'
-    }]));
+    })
   }
 
-
   if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
-    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+    errors.push({
       field: 'minAgeRestriction',
       message: 'min age 1, max age 18'
-    }]));
+    })
   }
 
   if (req.body.availableResolutions.length) {
@@ -154,11 +161,16 @@ homeTask01Router.put('/videos/:id', (req, res) => {
 
 
     if (!isValid) {
-      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      errors.push({
         field: 'availableResolutions',
         message: 'At least one resolution should be added'
-      }]));
+      })
     }
+  }
+
+  if (errors.length > 0) {
+    res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
+    return;
   }
 
   const driver = db.videos[index];
@@ -170,10 +182,12 @@ homeTask01Router.put('/videos/:id', (req, res) => {
   driver.publicationDate = req.body.publicationDate;
   driver.availableResolutions = req.body.availableResolutions;
 
+
   res.status(HttpStatus.NoContent)
 });
 
 homeTask01Router.delete('/videos/:id', (req, res) => {
+
   const id = parseInt(req.params.id);
 
   const index = db.videos.findIndex((v) => v.id === id);
