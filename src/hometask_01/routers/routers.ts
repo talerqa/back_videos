@@ -124,27 +124,31 @@ homeTask01Router.put('/videos/:id', (req, res) => {
       );
     return;
   }
-  if (req.body.title) {
 
-  if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
-    errors.push({
-      field: 'title',
-      message: 'Incorrect title'
-    })
-  }
-  }
-
-
-  if (req.body.author) {
-    if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
+  if (req.body.title !== undefined) {
+    if (req.body.title === null || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
       errors.push({
-        field: 'author',
-        message: 'Incorrect author'
+        field: 'title',
+        message: 'Incorrect title'
       })
     }
   }
 
-  if (req.body.canBeDownloaded) {
+  if (req.body.author !== undefined) {
+    if (
+      req.body.author === null ||
+      typeof req.body.author !== 'string' ||
+      req.body.author.trim().length === 0 ||
+      req.body.author.trim().length > 20
+    ) {
+      errors.push({
+        field: 'author',
+        message: 'Incorrect author',
+      });
+    }
+  }
+
+  if (req.body.canBeDownloaded !== undefined) {
     if (typeof req.body.canBeDownloaded !== 'boolean') {
       errors.push({
         field: 'canBeDownloaded',
@@ -153,7 +157,7 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     }
   }
 
-  if (req.body.minAgeRestriction) {
+  if (req.body.minAgeRestriction !== undefined) {
     if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
       errors.push({
         field: 'minAgeRestriction',
@@ -162,7 +166,7 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     }
   }
 
-  if (req.body.availableResolutions) {
+  if (req.body.availableResolutions !== undefined) {
     if (req.body.availableResolutions?.length) {
       const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
       const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
