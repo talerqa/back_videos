@@ -37,20 +37,19 @@ homeTask01Router.get('/videos', (req, res) => {
 homeTask01Router.post('/videos', (req, res) => {
     const errors: any[] = [];
 
-    if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
+    if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim().length === 0 || req.body.title.trim().length > 40) {
       errors.push({
         field: 'title',
         message: 'Incorrect title'
       })
     }
 
-    if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
+    if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim().length === 0 || req.body.author.trim().length > 20) {
       errors.push({
         field: 'author',
         message: 'Incorrect author'
       })
     }
-
 
 
     if (req.body.availableResolutions?.length) {
@@ -126,7 +125,10 @@ homeTask01Router.put('/videos/:id', (req, res) => {
   }
 
   if (req.body.title !== undefined) {
-    if (req.body.title === null || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
+    if (req.body.title === null ||
+      typeof req.body.title !== 'string' ||
+      req.body.title.trim().length === 0 ||
+      req.body.title.trim().length > 40) {
       errors.push({
         field: 'title',
         message: 'Incorrect title'
