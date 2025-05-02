@@ -95,7 +95,6 @@ homeTask01Router.post('/videos', (req, res) => {
     res.status(HttpStatus.Created).send(newDriver);
   }
 )
-;
 
 homeTask01Router.get('/videos/:id', (req, res) => {
   const id = parseInt(req.params.id);
@@ -125,6 +124,7 @@ homeTask01Router.put('/videos/:id', (req, res) => {
       );
     return;
   }
+  if (req.body.title) {
 
   if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
     errors.push({
@@ -132,41 +132,49 @@ homeTask01Router.put('/videos/:id', (req, res) => {
       message: 'Incorrect title'
     })
   }
-
-  if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
-    errors.push({
-      field: 'author',
-      message: 'Incorrect author'
-    })
   }
 
-  if (typeof req.body.canBeDownloaded !== 'boolean') {
-    errors.push({
-      field: 'canBeDownloaded',
-      message: 'Incorrect canBeDownloaded'
-    })
+
+  if (req.body.author) {
+    if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
+      errors.push({
+        field: 'author',
+        message: 'Incorrect author'
+      })
+    }
   }
 
-  if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
-    errors.push({
-      field: 'minAgeRestriction',
-      message: 'min age 1, max age 18'
-    })
+  if (req.body.canBeDownloaded) {
+    if (typeof req.body.canBeDownloaded !== 'boolean') {
+      errors.push({
+        field: 'canBeDownloaded',
+        message: 'Incorrect canBeDownloaded'
+      })
+    }
   }
 
-  if (!req.body.availableResolutions?.length) {
-    errors.push({
-      field: 'availableResolutions',
-      message: 'At least one resolution should be added'
-    })
+  if (req.body.minAgeRestriction) {
+    if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
+      errors.push({
+        field: 'minAgeRestriction',
+        message: 'min age 1, max age 18'
+      })
+    }
   }
 
-  if (req.body.availableResolutions?.length) {
-    const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
-    const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
+  if (req.body.availableResolutions) {
+    if (req.body.availableResolutions?.length) {
+      const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
+      const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
 
 
-    if (!isValid) {
+      if (!isValid) {
+        errors.push({
+          field: 'availableResolutions',
+          message: 'At least one resolution should be added'
+        })
+      }
+    } else {
       errors.push({
         field: 'availableResolutions',
         message: 'At least one resolution should be added'
@@ -181,15 +189,15 @@ homeTask01Router.put('/videos/:id', (req, res) => {
 
   const driver = db.videos[index];
 
-  driver.title = req.body.title;
-  driver.author = req.body.author;
-  driver.canBeDownloaded = req.body.canBeDownloaded;
-  driver.minAgeRestriction = req.body.minAgeRestriction;
-  driver.publicationDate = req.body.publicationDate;
-  driver.availableResolutions = req.body.availableResolutions;
+  driver.title = req.body.title ? req.body.title : driver.title;
+  driver.author = req.body.author ? req.body.author : driver.author;
+  driver.canBeDownloaded = req.body.canBeDownloaded ? req.body.canBeDownloaded : driver.canBeDownloaded;
+  driver.minAgeRestriction = req.body.minAgeRestriction ? req.body.minAgeRestriction : driver.minAgeRestriction;
+  driver.publicationDate = req.body.publicationDate ? req.body.publicationDate : driver.publicationDate;
+  driver.availableResolutions = req.body.availableResolutions ? req.body.availableResolutions : driver.availableResolutions;
 
 
-  res.status(HttpStatus.NoContent)
+  res.status(HttpStatus.NoContent).send()
 });
 
 homeTask01Router.delete('/videos/:id', (req, res) => {
