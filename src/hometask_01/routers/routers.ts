@@ -11,10 +11,10 @@ tomorrow.setDate(today.getDate() + 1);
 const db = {
   videos: <Video[]>[
     {
-      id: 0,
+      id: 1,
       title: "string",
       author: "string",
-      canBeDownloaded: true,
+      canBeDownloaded: false,
       minAgeRestriction: null,
       createdAt: today.toISOString(),
       publicationDate: tomorrow.toISOString(),
@@ -69,6 +69,9 @@ homeTask01Router.post('/videos', (req, res) => {
       }
     }
 
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
     const newDriver: any = {
       id: db.videos.length ? db.videos[db.videos.length - 1].id + 1 : 1,
