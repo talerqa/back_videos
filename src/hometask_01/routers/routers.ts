@@ -35,14 +35,14 @@ homeTask01Router.get('/videos', (req, res) => {
 });
 
 homeTask01Router.post('/videos', (req, res) => {
-    if (req.body.title.trim() > 40 || typeof req.body.title !== 'string' || !req.body.title) {
+    if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
       res.status(HttpStatus.BadRequest).send(createErrorMessages([{
         field: 'title',
         message: 'Incorrect title'
       }]));
     }
 
-    if (req.body.author.trim() > 20 || typeof req.body.author !== 'string' || !req.body.author) {
+    if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
       res.status(HttpStatus.BadRequest).send(createErrorMessages([{
         field: 'author',
         message: 'Incorrect author'
@@ -119,14 +119,14 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     return;
   }
 
-  if (req.body.title.trim() > 40 || typeof req.body.title !== 'string' || !req.body.title) {
+  if (!req.body.title || typeof req.body.title !== 'string' || req.body.title.trim() > 40) {
     res.status(HttpStatus.BadRequest).send(createErrorMessages([{
       field: 'title',
       message: 'Incorrect title'
     }]));
   }
 
-  if (req.body.author.trim() > 20 || typeof req.body.author !== 'string' || !req.body.author) {
+  if (!req.body.author || typeof req.body.author !== 'string' || req.body.author.trim() > 20) {
     res.status(HttpStatus.BadRequest).send(createErrorMessages([{
       field: 'author',
       message: 'Incorrect author'
