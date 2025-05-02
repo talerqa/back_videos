@@ -71,7 +71,7 @@ homeTask01Router.post('/videos', (req, res) => {
 
 
     const newDriver: any = {
-      id: 0,
+      id: db.videos.length ? db.videos[db.videos.length - 1].id + 1 : 1,
       title: req.body.title,
       author: req.body.author,
       createdAt: new Date().toISOString(),
