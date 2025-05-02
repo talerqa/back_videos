@@ -86,7 +86,7 @@ homeTask01Router.post('/videos', (req, res) => {
       author: req.body.author,
       createdAt: new Date().toISOString(),
       publicationDate: tomorrow.toISOString(),
-      canBeDownloaded: true,
+      canBeDownloaded: false,
       minAgeRestriction: null,
       availableResolutions: req.body.availableResolutions,
     }
