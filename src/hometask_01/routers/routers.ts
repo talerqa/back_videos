@@ -2,7 +2,8 @@ import {Router} from 'express';
 import {HttpStatus} from "../../core/types/httpCodes";
 import {Video} from "../types/video";
 import {createErrorMessages} from "../../core/utils/createErrorMessages";
-import {validateVideoData} from "../../core/utils/IsValidateVideoData";
+import {isValidationPostData} from "../../core/utils/isValidationPostData";
+import {isValidationPutData} from "../../core/utils/isValidationPutData";
 
 export const homeTask01Router = Router({});
 
@@ -31,7 +32,7 @@ homeTask01Router.get('/videos', (req, res) => {
 });
 
 homeTask01Router.post('/videos', (req, res) => {
-  const errors = validateVideoData(req.body, 'POST')
+  const errors = isValidationPostData(req.body)
   if (errors.length > 0) {
     res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
     return;
@@ -84,7 +85,7 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     return;
   }
 
-  const errors = validateVideoData(req.body, 'PUT')
+  const errors = isValidationPutData(req.body)
 
   if (errors.length > 0) {
     res.status(HttpStatus.BadRequest).send(createErrorMessages(errors));
