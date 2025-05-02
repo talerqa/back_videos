@@ -26,8 +26,8 @@ const db = {
 
 export const createErrorMessages = (
   errors: any[],
-): { errorMessages: any[] } => {
-  return {errorMessages: errors};
+): { errorsMessages: any[] } => {
+  return {errorsMessages: errors};
 };
 
 homeTask01Router.get('/videos', (req, res) => {
@@ -51,12 +51,7 @@ homeTask01Router.post('/videos', (req, res) => {
       })
     }
 
-    if (!req.body.availableResolutions?.length) {
-      errors.push({
-        field: 'availableResolutions',
-        message: 'At least one resolution should be added'
-      })
-    }
+
 
     if (req.body.availableResolutions?.length) {
       const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
@@ -69,6 +64,11 @@ homeTask01Router.post('/videos', (req, res) => {
           message: 'At least one resolution should be added'
         })
       }
+    } else {
+      errors.push({
+        field: 'availableResolutions',
+        message: 'At least one resolution should be added'
+      })
     }
 
     if (errors.length > 0) {
