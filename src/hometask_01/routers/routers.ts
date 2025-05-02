@@ -168,6 +168,16 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     }
   }
 
+
+  if (req.body.publicationDate !== undefined) {
+    if (typeof req.body.publicationDate !== 'string') {
+      errors.push({
+        field: 'publicationDate',
+        message: 'error'
+      })
+    }
+  }
+
   if (req.body.availableResolutions !== undefined) {
     if (req.body.availableResolutions?.length) {
       const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
