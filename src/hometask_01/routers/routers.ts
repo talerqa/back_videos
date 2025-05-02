@@ -1,7 +1,6 @@
 import {Router} from 'express';
 import {HttpStatus} from "../../core/types/httpCodes";
 import {Video} from "../types/video";
-import {CreateVideoInputModel} from "../dto/createVideoInputModel";
 
 export const homeTask01Router = Router({});
 
@@ -42,24 +41,17 @@ export const createErrorMessages = (
   return {errorMessages: errors};
 };
 
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
 homeTask01Router.get('/videos', (req, res) => {
   res.status(HttpStatus.Ok).send(db.videos);
 });
 
 homeTask01Router.post('/videos', (req, res) => {
-
-
     if (req.body.title.trim() > 40 || typeof req.body.title !== 'string' || !req.body.title) {
       res.status(HttpStatus.BadRequest).send(createErrorMessages([{
         field: 'title',
         message: 'Incorrect title'
       }]));
     }
-
 
     if (req.body.author.trim() > 20 || typeof req.body.author !== 'string' || !req.body.author) {
       res.status(HttpStatus.BadRequest).send(createErrorMessages([{
@@ -87,8 +79,16 @@ homeTask01Router.post('/videos', (req, res) => {
         }]));
       }
     }
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
-    const newDriver: CreateVideoInputModel | any = {
+    const newDriver: any = {
+      id: db.videos.length ? db.videos[db.videos.length - 1].id + 1 : 1,
+      createdAt: new Date().toISOString(),
+      publicationDate: tomorrow.toISOString(),
+      canBeDownloaded: false,
+      minAgeRestriction: null,
       title: req.body.title,
       author: req.body.author,
       availableResolutions: req.body.availableResolutions,
@@ -108,15 +108,71 @@ homeTask01Router.get('/videos/:id', (req, res) => {
     res
       .status(HttpStatus.NotFound)
       .send(
-        createErrorMessages([{field: 'id', message: "If video for passed id doesn't exist"}]),
+        createErrorMessages([{field: 'id', message: "Video doesn't exist"}]),
       );
     return;
   }
-  res.status(200).send(driver);
+  res.status(HttpStatus.Ok).send(driver);
 });
 
 homeTask01Router.put('/videos/:id', (req, res) => {
-  res.status(200).send('hello world!!!');
+
+  const id = parseInt(req.params.id);
+  const index = db.videos.findIndex((v) => v.id === id);
+
+  if (index === -1) {
+    res
+      .status(HttpStatus.NotFound)
+      .send(
+        createErrorMessages([{field: 'id', message: 'Video not found'}]),
+      );
+    return;
+  }
+
+  if (req.body.title.trim() > 40 || typeof req.body.title !== 'string' || !req.body.title) {
+    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      field: 'title',
+      message: 'Incorrect title'
+    }]));
+  }
+
+  if (req.body.author.trim() > 20 || typeof req.body.author !== 'string' || !req.body.author) {
+    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      field: 'author',
+      message: 'Incorrect author'
+    }]));
+  }
+
+  if (!req.body.availableResolutions.length) {
+    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      field: 'availableResolutions',
+      message: 'At least one resolution should be added'
+    }]));
+  }
+
+  if (req.body.availableResolutions.length) {
+    const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
+    const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
+
+
+    if (!isValid) {
+      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+        field: 'availableResolutions',
+        message: 'At least one resolution should be added'
+      }]));
+    }
+  }
+
+  const driver = db.videos[index];
+
+  driver.title = req.body.title;
+  driver.author = req.body.author;
+  driver.canBeDownloaded = req.body.canBeDownloaded;
+  driver.minAgeRestriction = req.body.minAgeRestriction;
+  driver.publicationDate = req.body.publicationDate;
+  driver.availableResolutions = req.body.availableResolutions;
+
+  res.status(HttpStatus.NoContent)
 });
 
 homeTask01Router.delete('/videos/:id', (req, res) => {
