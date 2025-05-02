@@ -1,10 +1,7 @@
 import {AvailableResolutionsType} from "../types/video";
 
-export type UpdateVideoInputModel = {
+export type CreateVideoInputModel = {
   title: string,
   author: string,
   availableResolutions: AvailableResolutionsType[]
-  canBeDownloaded: boolean
-  minAgeRestriction: number
-  publicationDate: string | Date
 }

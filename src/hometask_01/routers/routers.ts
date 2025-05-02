@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {HttpStatus} from "../../core/types/httpCodes";
 import {Video} from "../types/video";
+import {CreateVideoInputModel} from "../dto/createVideoInputModel";
 
 export const homeTask01Router = Router({});
 
@@ -13,7 +14,7 @@ const db = {
     minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
     publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P240', "P720"]
+    availableResolutions: ['P144']
   }, {
     id: 2,
     title: 'Video 02',
@@ -22,7 +23,7 @@ const db = {
     minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
     publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P240', "P1080"]
+    availableResolutions: ['P144']
   }, {
     id: 3,
     title: 'Video 03',
@@ -31,7 +32,7 @@ const db = {
     minAgeRestriction: null,
     createdAt: '2025-05-01T12:00:00Z',
     publicationDate: '2025-05-02T12:00:00Z',
-    availableResolutions: ['P240', "P360"]
+    availableResolutions: ['P144']
   }]
 }
 
@@ -42,13 +43,62 @@ export const createErrorMessages = (
 };
 
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
 homeTask01Router.get('/videos', (req, res) => {
   res.status(HttpStatus.Ok).send(db.videos);
 });
 
 homeTask01Router.post('/videos', (req, res) => {
-  res.status(201).send('hello world!!!');
-});
+
+
+    if (req.body.title.trim() > 40 || typeof req.body.title !== 'string' || !req.body.title) {
+      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+        field: 'title',
+        message: 'Incorrect title'
+      }]));
+    }
+
+
+    if (req.body.author.trim() > 20 || typeof req.body.author !== 'string' || !req.body.author) {
+      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+        field: 'author',
+        message: 'Incorrect author'
+      }]));
+    }
+
+    if (!req.body.availableResolutions.length) {
+      res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+        field: 'availableResolutions',
+        message: 'At least one resolution should be added'
+      }]));
+    }
+
+    if (req.body.availableResolutions.length) {
+      const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
+      const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
+
+
+      if (!isValid) {
+        res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+          field: 'availableResolutions',
+          message: 'At least one resolution should be added'
+        }]));
+      }
+    }
+
+    const newDriver: CreateVideoInputModel | any = {
+      title: req.body.title,
+      author: req.body.author,
+      availableResolutions: req.body.availableResolutions,
+    }
+
+    db.videos.push(newDriver);
+    res.status(HttpStatus.Created).send(newDriver);
+  }
+)
+;
 
 homeTask01Router.get('/videos/:id', (req, res) => {
   const id = parseInt(req.params.id);
