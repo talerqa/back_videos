@@ -71,13 +71,13 @@ homeTask01Router.post('/videos', (req, res) => {
 
 
     const newDriver: any = {
-      id: db.videos.length ? db.videos[db.videos.length - 1].id + 1 : 1,
-      createdAt: new Date().toISOString(),
-      publicationDate: tomorrow.toISOString(),
-      canBeDownloaded: false,
-      minAgeRestriction: null,
+      id: 0,
       title: req.body.title,
       author: req.body.author,
+      createdAt: new Date().toISOString(),
+      publicationDate: tomorrow.toISOString(),
+      canBeDownloaded: true,
+      minAgeRestriction: null,
       availableResolutions: req.body.availableResolutions,
     }
 
@@ -137,6 +137,14 @@ homeTask01Router.put('/videos/:id', (req, res) => {
     }]));
   }
 
+
+  if (req.body.minAgeRestriction > 18 || req.body.minAgeRestriction < 1) {
+    res.status(HttpStatus.BadRequest).send(createErrorMessages([{
+      field: 'minAgeRestriction',
+      message: 'min age 1, max age 18'
+    }]));
+  }
+
   if (req.body.availableResolutions.length) {
     const allowedValues = ["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"];
     const isValid = req.body.availableResolutions.every(item => allowedValues.includes(item));
@@ -165,7 +173,6 @@ homeTask01Router.put('/videos/:id', (req, res) => {
 homeTask01Router.delete('/videos/:id', (req, res) => {
   const id = parseInt(req.params.id);
 
-  //ищет первый элемент, у которого функция внутри возвращает true и возвращает индекс этого элемента в массиве, если id ни у кого не совпал, то findIndex вернёт -1.
   const index = db.videos.findIndex((v) => v.id === id);
 
   if (index === -1) {
